@@ -44,7 +44,7 @@ def login():
 
         # Query database for username
         try:
-            response = supabase.table("Usuarios").select("*").eq("username", request.form.get("username")).execute()
+            response = supabase.table("usuarios").select("*").eq("username",request.form.get("username")).execute()
             rows = response.data
         except Exception as e:
             return apology(f"Database error: {str(e)}", 500)
@@ -69,17 +69,17 @@ def main():
         book_id = request.form.get("book_id")
         user_id = session["user_id"]
         try:
-            supabase.table("Usuarios").update({"current_book": book_id}).eq("id", user_id).execute()
+            supabase.table("usuarios").update({"current_book": book_id}).eq("id", user_id).execute()
         except Exception as e:
             return apology(f"Database error: {str(e)}", 500)
         return redirect("/main")
     else:
         user_id = session["user_id"]
         try:
-            response = supabase.table("UserLibrary").select("*").eq("user_id", user_id).execute()
+            response = supabase.table("user_library").select("*").eq("user_id",user_id).execute()
             rows = response.data
 
-            current_book_response = supabase.table("Usuarios").select("current_book").eq("id", user_id).execute()
+            current_book_response = supabase.table("usuarios").select("current_book").eq("id", user_id).execute()
             current_book_query = current_book_response.data
         except Exception as e:
             return apology(f"Database error: {str(e)}", 500)
@@ -115,7 +115,7 @@ def register():
         password = request.form.get("password")
 
         try:
-            response = supabase.table("Usuarios").select("*").eq("username", nombre).execute()
+            response = supabase.table("usuarios").select("*").eq("username",nombre).execute()
             rows = response.data
         except Exception as e:
             return apology(f"Database error: {str(e)}", 500)
@@ -125,7 +125,7 @@ def register():
         else:
             hashcode = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
             try:
-                supabase.table("Usuarios").insert({"username": nombre, "password": hashcode}).execute()
+                supabase.table("usuarios").insert({"username": nombre,"password": hashcode}).execute()
             except Exception as e:
                 return apology(f"Database error: {str(e)}", 500)
             return redirect("/login")
@@ -137,14 +137,14 @@ def register():
 def profile():
     user_id = session["user_id"]
     try:
-        response = supabase.table("Usuarios").select("username").eq("id", user_id).execute()
+        response = supabase.table("usuarios").select("username").eq("id", user_id).execute()
         rows = response.data
     except Exception as e:
         return apology(f"Database error: {str(e)}", 500)
     return render_template("profile.html")
 
 # Configura la clave de API de Google Books
-GOOGLE_BOOKS_API_KEY = "AIzaSyAZ7X6jUncbjsNf8S4xgSICqVKgbYYcvPM"
+GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY")
 
 @app.route("/search")
 @login_required
@@ -162,7 +162,7 @@ def biblioteca():
     user_id = session["user_id"]
 
     try:
-        response = supabase.table("UserLibrary").select("*").eq("user_id", user_id).execute()
+        response = supabase.table("user_library").select("*").eq("user_id",user_id).execute()
         rows = response.data
     except Exception as e:
         return apology(f"Database error: {str(e)}", 500)
@@ -178,12 +178,12 @@ def addBook():
     user_id = session["user_id"]
 
     try:
-        supabase.table("UserLibrary").insert({
-            "title": title,
-            "author": authors,
-            "thumbnail": thumbnail,
-            "user_id": user_id
-        }).execute()
+        supabase.table("user_library").insert({
+    "title": title,
+    "author": authors,
+    "thumbnail": thumbnail,
+    "user_id": user_id
+    }).execute()
     except Exception as e:
         return apology(f"Database error: {str(e)}", 500)
 
