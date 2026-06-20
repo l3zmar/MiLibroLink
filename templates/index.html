@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Libro Link — Tu rastreador de lectura</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --night: #1B1F3B;
+            --gold: #E8C547;
+            --cream: #F5F0E8;
+            --ocean: #3D5A80;
+            --pale: #E8EEF4;
+            --bark: #6B4226;
+            --white: #FFFFFF;
+            --text-dark: #1B1F3B;
+            --text-mid: #4A4E6B;
+            --text-light: #8C90A8;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-md: 0 6px 24px rgba(27,31,59,0.14);
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--night);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAV --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 48px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span { color: var(--white); }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--white);
+            text-decoration: none;
+            padding: 10px 24px;
+            border: 1.5px solid rgba(255,255,255,0.25);
+            border-radius: 100px;
+            transition: all var(--transition);
+        }
+
+        .nav-link:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* --- HERO --- */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            min-height: calc(100vh - 90px);
+            padding: 0 48px 60px;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 5vw, 4.2rem);
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: var(--white);
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero-body {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 40px;
+            max-width: 440px;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--night);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            padding: 15px 36px;
+            border-radius: 100px;
+            transition: all var(--transition);
+            box-shadow: 0 4px 20px rgba(232,197,71,0.35);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(232,197,71,0.5);
+        }
+
+        .hero-secondary {
+            display: inline-block;
+            margin-left: 16px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            transition: color var(--transition);
+        }
+
+        .hero-secondary:hover { color: var(--white); }
+
+        /* --- BOOK STACK (right side visual) --- */
+        .hero-visual {
+            position: relative;
+            height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-stack {
+            position: relative;
+            width: 280px;
+            height: 380px;
+        }
+
+        .book {
+            position: absolute;
+            border-radius: 4px 12px 12px 4px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .book-1 {
+            width: 170px; height: 230px;
+            background: linear-gradient(135deg, #3D5A80, #2a3f5c);
+            bottom: 20px; left: 40px;
+            transform: rotate(-8deg);
+        }
+
+        .book-2 {
+            width: 160px; height: 215px;
+            background: linear-gradient(135deg, #6B4226, #4a2e1a);
+            bottom: 60px; left: 80px;
+            transform: rotate(3deg);
+        }
+
+        .book-3 {
+            width: 155px; height: 200px;
+            background: linear-gradient(135deg, #E8C547, #c9a72e);
+            bottom: 100px; left: 65px;
+            transform: rotate(-3deg);
+        }
+
+        .book-3::after {
+            content: 'Mi Libro\A Link';
+            white-space: pre;
+            position: absolute;
+            top: 30px; left: 18px;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--night);
+            line-height: 1.4;
+        }
+
+        .bookmark-ribbon {
+            position: absolute;
+            top: -20px;
+            right: 30px;
+            width: 18px;
+            height: 60px;
+            background: var(--gold);
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+        }
+
+        /* --- STATS BAR --- */
+        .stats {
+            background: rgba(255,255,255,0.04);
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .stats-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 48px;
+            display: flex;
+            gap: 60px;
+        }
+
+        .stat-item { }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            nav { padding: 20px 24px; }
+            .nav-links { gap: 12px; }
+            .nav-link { padding: 8px 16px; font-size: 0.85rem; }
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 40px 24px 60px;
+                min-height: auto;
+                gap: 40px;
+            }
+            .hero-visual { height: 260px; }
+            .book-stack { transform: scale(0.7); }
+            .stats-inner { flex-wrap: wrap; gap: 32px; padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">Mi Libro <span>Link</span></a>
+        <div class="nav-links">
+            <a href="/login" class="nav-link">Iniciar sesión</a>
+            <a href="/register" class="nav-link">Registrarse</a>
+        </div>
+    </nav>
+
+    <main class="hero">
+        <div class="hero-content">
+            <p class="hero-eyebrow">Tu biblioteca personal</p>
+            <h1 class="hero-title">
+                Cada libro que lees,<br><em>conectado.</em>
+            </h1>
+            <p class="hero-body">
+                Mi Libro Link te ayuda a organizar tu colección, registrar tu lectura actual y descubrir qué leer a continuación. Simple, bonito, tuyo.
+            </p>
+            <div>
+                <a href="/register" class="hero-cta">Comenzar gratis</a>
+                <a href="/login" class="hero-secondary">Ya tengo cuenta →</a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="book-stack">
+                <div class="book book-1"></div>
+                <div class="book book-2"></div>
+                <div class="book book-3">
+                    <div class="bookmark-ribbon"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="stats">
+        <div class="stats-inner">
+            <div class="stat-item">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Libros por descubrir</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1</div>
+                <div class="stat-label">Biblioteca personal</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">Google</div>
+                <div class="stat-label">Books integrado</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

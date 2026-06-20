@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión — Mi Libro Link</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --night: #1B1F3B;
+            --gold: #E8C547;
+            --cream: #F5F0E8;
+            --ocean: #3D5A80;
+            --pale: #E8EEF4;
+            --white: #FFFFFF;
+            --text-mid: #4A4E6B;
+            --radius-md: 12px;
+            --shadow-lg: 0 16px 48px rgba(27,31,59,0.20);
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--night);
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* --- LEFT PANEL --- */
+        .left-panel {
+            background: linear-gradient(160deg, #1B1F3B 0%, #2a305a 50%, #3D5A80 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -80px; right: -80px;
+            width: 360px; height: 360px;
+            border-radius: 50%;
+            background: rgba(232,197,71,0.07);
+            pointer-events: none;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--white); }
+
+        .panel-quote {
+            max-width: 360px;
+        }
+
+        .panel-quote blockquote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.6rem;
+            line-height: 1.4;
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .panel-quote cite {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .panel-footer {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* --- RIGHT PANEL (form) --- */
+        .right-panel {
+            background: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--night);
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-mid);
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--night);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--night);
+            background: var(--white);
+            border: 1.5px solid #D5D0C8;
+            border-radius: var(--radius-md);
+            transition: border-color var(--transition), box-shadow var(--transition);
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: var(--ocean);
+            box-shadow: 0 0 0 3px rgba(61,90,128,0.12);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: var(--night);
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all var(--transition);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            background: var(--ocean);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(27,31,59,0.2);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 0.88rem;
+            color: var(--text-mid);
+        }
+
+        .form-footer a {
+            color: var(--ocean);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover { text-decoration: underline; }
+
+        .divider {
+            height: 1px;
+            background: #D5D0C8;
+            margin: 28px 0;
+            position: relative;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            body { grid-template-columns: 1fr; }
+            .left-panel { display: none; }
+            .right-panel { padding: 40px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="left-panel">
+        <a href="/" class="logo">Mi Libro <span>Link</span></a>
+
+        <div class="panel-quote">
+            <blockquote>"Un lector vive mil vidas antes de morir. El que nunca lee vive solo una."</blockquote>
+            <cite>— George R.R. Martin</cite>
+        </div>
+
+        <div class="panel-footer">© 2024 Mi Libro Link</div>
+    </div>
+
+    <div class="right-panel">
+        <div class="form-card">
+            <h1 class="form-title">Bienvenido de vuelta.</h1>
+            <p class="form-subtitle">Ingresa a tu biblioteca personal.</p>
+
+            <form id="loginForm" action="/login" method="post">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" placeholder="tu_usuario" autocomplete="off" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary">Iniciar sesión</button>
+            </form>
+
+            <div class="divider"></div>
+
+            <p class="form-footer">¿Primera vez aquí? <a href="/register">Crear una cuenta</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@100..400&display=swap"
+            rel="stylesheet">
+        <title>Search Books</title>
+        <style>
+            body {
+                font-family: "Playwrite IT Moderna", cursive;
+                font-optical-sizing: auto;
+                font-weight: 400;
+                font-style: normal;
+                background-color: #fff;
+                margin: 0;
+                padding: 0;
+            }
+
+            header {
+                background-color: #5A639C;
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+            }
+
+            h1 {
+                margin: 0;
+                padding: 0;
+            }
+
+            nav {
+                display: flex;
+                justify-content: center;
+                background-color: #7776B3;
+                padding: 10px;
+            }
+
+            nav a {
+                color: #fff;
+                text-decoration: none;
+                margin: 0 20px;
+            }
+
+            .search-container {
+                max-width: 800px;
+                margin: 20px auto;
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 5px;
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+            }
+
+            input[type="text"] {
+                width: 350px;
+                padding: 0.5rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            button {
+                width: 100px;
+                padding: 0.5rem 1rem;
+                background-color: #7776B3;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #5A639C;
+            }
+
+            #results {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .book-card {
+                border: 1px solid #ddd;
+                padding: 1rem;
+                margin: 1rem 0;
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                display: flex;
+                gap: 1rem;
+            }
+
+            .book-card img {
+                max-width: 100px;
+                height: auto;
+                border-radius: 4px;
+            }
+
+            .book-info {
+                flex: 1;
+            }
+
+            .book-info p {
+                margin: 0.5rem 0;
+            }
+
+            .book-card a {
+                color: #007bff;
+                text-decoration: none;
+                margin-right: 1rem;
+            }
+
+            .book-card a:hover {
+                text-decoration: underline;
+            }
+
+            .agregarLibro {
+                background-color: #7776B3;
+                color: #fff;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .agregarLibro:hover {
+                background-color: #5A639C;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <h1>Search your new book!</h1>
+        </header>
+        <nav>
+            <a href="/main">Homepage</a>
+            <a href="/search">Search book</a>
+            <a href="/biblioteca">My books</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Log Out</a>
+        </nav>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search...">
+            <button onclick="searchBooks()">Search</button>
+        </div>
+        <div id="results"></div>
+
+        <script>
+            async function searchBooks() {
+                const query = document.getElementById('searchInput').value;
+                if (!query) return;
+
+                try {
+                    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+                    const data = await response.json();
+
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = '';
+
+                    if (!data.items) {
+                        resultsDiv.innerHTML = '<p>No books found.</p>';
+                        return;
+                    }
+
+                    data.items.forEach(item => {
+                        const title = item.volumeInfo.title;
+                        const authors = item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Unknown Author';
+                        const thumbnail = item.volumeInfo.imageLinks?.thumbnail || 'https://via.placeholder.com/100?text=No+Image';
+                        const previewLink = item.volumeInfo.previewLink;
+
+                        const bookCard = document.createElement('div');
+                        bookCard.classList.add('book-card');
+                        bookCard.innerHTML = `
+                            <img src="${thumbnail}" alt="${title}">
+                            <div class="book-info">
+                                <p><strong>${title}</strong></p>
+                                <p>${authors}</p>
+                                <a href="${previewLink}" target="_blank">Preview</a>
+                                <form action='/addBook' method="post" style="display: inline;">
+                                    <input type="hidden" name="title" value="${title}">
+                                    <input type="hidden" name="authors" value="${authors}">
+                                    <input type="hidden" name="thumbnail" value="${thumbnail}">
+                                    <input type="submit" class="agregarLibro" value="Add Book">
+                                </form>
+                            </div>
+                        `;
+                        resultsDiv.appendChild(bookCard);
+                    });
+                } catch (error) {
+                    console.error('Error searching books:', error);
+                    document.getElementById('results').innerHTML = '<p>Error searching books. Please try again.</p>';
+                }
+            }
+        </script>
+    </body>
+
+</html>

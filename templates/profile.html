@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi perfil — Mi Libro Link</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --night: #1B1F3B;
+            --gold: #E8C547;
+            --cream: #F5F0E8;
+            --ocean: #3D5A80;
+            --pale: #E8EEF4;
+            --white: #FFFFFF;
+            --text-mid: #4A4E6B;
+            --text-light: #8C90A8;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 2px 8px rgba(27,31,59,0.08);
+            --shadow-md: 0 6px 24px rgba(27,31,59,0.14);
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--night);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: var(--night);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--white); }
+
+        .topbar-nav { display: flex; gap: 4px; }
+
+        .topbar-nav a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all var(--transition);
+        }
+
+        .topbar-nav a:hover, .topbar-nav a.active {
+            color: var(--white);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .topbar-profile { display: flex; gap: 12px; }
+
+        .topbar-profile a {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            padding: 8px 14px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            transition: all var(--transition);
+        }
+
+        .topbar-profile a:hover { color: var(--gold); border-color: var(--gold); }
+
+        .page-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--night);
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+
+        .profile-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 24px;
+        }
+
+        .profile-section {
+            margin-bottom: 28px;
+        }
+
+        .profile-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-mid);
+            margin-bottom: 10px;
+        }
+
+        .profile-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--night);
+            word-break: break-word;
+        }
+
+        .divider {
+            height: 1px;
+            background: #E0DAD0;
+            margin: 28px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 28px;
+            padding-top: 28px;
+            border-top: 1px solid #E0DAD0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--ocean);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            display: block;
+            padding: 14px 24px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.88rem;
+            text-align: center;
+            text-decoration: none;
+            transition: all var(--transition);
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--night);
+            color: var(--gold);
+        }
+
+        .btn-primary:hover {
+            background: var(--ocean);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--pale);
+            color: var(--ocean);
+            border: 1.5px solid #D5DCE8;
+        }
+
+        .btn-secondary:hover {
+            background: #E8EEF4;
+            border-color: var(--ocean);
+        }
+
+        .info-box {
+            background: #F9F7F4;
+            border-left: 4px solid var(--gold);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .info-box-title {
+            font-weight: 600;
+            color: var(--night);
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .info-box-text {
+            font-size: 0.85rem;
+            color: var(--text-mid);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 640px) {
+            .topbar { padding: 0 20px; }
+            .topbar-nav a { padding: 6px 10px; font-size: 0.78rem; }
+            .page-container { padding: 24px 16px; }
+            .profile-card { padding: 24px; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="/main" class="logo">Mi Libro <span>Link</span></a>
+        <nav class="topbar-nav">
+            <a href="/main">Inicio</a>
+            <a href="/search">Buscar</a>
+            <a href="/biblioteca">Mi biblioteca</a>
+        </nav>
+        <div class="topbar-profile">
+            <a href="/profile" class="active">Mi perfil</a>
+            <a href="/logout">Salir</a>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <h1 class="page-title">Mi perfil</h1>
+        <p class="page-subtitle">Información de tu cuenta.</p>
+
+        <div class="profile-card">
+            <div class="info-box">
+                <div class="info-box-title">Bienvenido a Mi Libro Link</div>
+                <div class="info-box-text">Aqui puedes ver tu información de perfil y gestionar tu cuenta.</div>
+            </div>
+
+            <div class="profile-section">
+                <span class="profile-label">Usuario</span>
+                <div class="profile-value">Lector apasionado</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-number">📚</div>
+                    <div class="stat-label">Libros guardados</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">✨</div>
+                    <div class="stat-label">Lecturas</div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="actions">
+                <a href="/main" class="btn btn-primary">Volver al inicio</a>
+                <a href="/logout" class="btn btn-secondary">Cerrar sesion</a>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>

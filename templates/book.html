@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@100..400&display=swap"
+            rel="stylesheet">
+        <title>Book Details</title>
+        <style>
+            body {
+                font-family: "Playwrite IT Moderna", cursive;
+                font-optical-sizing: auto;
+                font-weight: 400;
+                font-style: normal;
+                background-color: #fff;
+                margin: 0;
+                padding: 0;
+            }
+
+            header {
+                background-color: #5A639C;
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+            }
+
+            nav {
+                display: flex;
+                justify-content: center;
+                background-color: #7776B3;
+                padding: 10px;
+            }
+
+            nav a {
+                color: #fff;
+                text-decoration: none;
+                margin: 0 20px;
+            }
+
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 5px;
+            }
+
+            #viewerCanvas {
+                width: 100%;
+                height: 600px;
+                margin: 20px 0;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        </style>
+        <script type="text/javascript" src="https://www.google.com/books/jsapi.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <h1>Book Viewer</h1>
+        </header>
+        <nav>
+            <a href="/main">Homepage</a>
+            <a href="/search">Search book</a>
+            <a href="/biblioteca">My books</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Log Out</a>
+        </nav>
+        <div class="container">
+            <div id="viewerCanvas"></div>
+        </div>
+
+        <script type="text/javascript">
+            google.books.load();
+            function initialize() {
+                var viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
+                var search = document.URL.indexOf('?');
+                if (search > 0) {
+                    var bookIsbn = document.URL.substring(search + 6, document.URL.length).split("=")[1];
+                    console.log(bookIsbn);
+                    viewer.load('ISBN:' + bookIsbn);
+                }
+            }
+            google.books.setOnLoadCallback(initialize);
+        </script>
+    </body>
+
+</html>
+

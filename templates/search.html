@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar libros — Mi Libro Link</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --night: #1B1F3B;
+            --gold: #E8C547;
+            --cream: #F5F0E8;
+            --ocean: #3D5A80;
+            --pale: #E8EEF4;
+            --white: #FFFFFF;
+            --text-mid: #4A4E6B;
+            --text-light: #8C90A8;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 2px 8px rgba(27,31,59,0.08);
+            --shadow-md: 0 6px 24px rgba(27,31,59,0.14);
+            --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--night);
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            background: var(--night);
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--white); }
+
+        .topbar-nav { display: flex; gap: 4px; }
+
+        .topbar-nav a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all var(--transition);
+        }
+
+        .topbar-nav a:hover,
+        .topbar-nav a.active {
+            color: var(--white);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .topbar-profile { display: flex; gap: 12px; }
+
+        .topbar-profile a {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            padding: 8px 14px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            transition: all var(--transition);
+        }
+
+        .topbar-profile a:hover { color: var(--gold); border-color: var(--gold); }
+
+        /* PAGE */
+        .page-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        /* SEARCH HERO */
+        .search-hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .search-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--night);
+            margin-bottom: 8px;
+        }
+
+        .search-hero p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 0;
+            max-width: 560px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            border: 1.5px solid #D5D0C8;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow var(--transition), border-color var(--transition);
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--ocean);
+            box-shadow: 0 0 0 3px rgba(61,90,128,0.12);
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 16px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: var(--night);
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+
+        .search-bar input::placeholder { color: var(--text-light); }
+
+        .search-bar button {
+            padding: 12px 24px;
+            background: var(--night);
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            margin: 6px;
+            border-radius: 12px;
+            transition: all var(--transition);
+        }
+
+        .search-bar button:hover { background: var(--ocean); }
+
+        /* RESULTS */
+        #results { }
+
+        .results-count {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .book-result {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow var(--transition), transform var(--transition);
+        }
+
+        .book-result:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .book-result-cover {
+            width: 68px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+            background: var(--pale);
+        }
+
+        .book-result-cover-ph {
+            width: 68px;
+            height: 100px;
+            background: var(--pale);
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .book-result-info { flex: 1; min-width: 0; }
+
+        .book-result-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            color: var(--night);
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .book-result-author {
+            font-size: 0.85rem;
+            color: var(--text-mid);
+            margin-bottom: 14px;
+        }
+
+        .book-result-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-add-book {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            background: var(--night);
+            color: var(--gold);
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-add-book:hover { background: var(--ocean); }
+
+        .btn-preview {
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            color: var(--ocean);
+            text-decoration: none;
+            border: 1.5px solid #C8D8E8;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
+            display: inline-block;
+        }
+
+        .btn-preview:hover { border-color: var(--ocean); background: var(--pale); }
+
+        /* SUCCESS TOAST */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: var(--night);
+            color: var(--white);
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-md);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+            z-index: 999;
+        }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast-icon { color: var(--gold); }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 48px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .spinner {
+            width: 32px; height: 32px;
+            border: 3px solid var(--pale);
+            border-top-color: var(--ocean);
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 640px) {
+            .topbar { padding: 0 20px; }
+            .topbar-nav a { padding: 6px 10px; font-size: 0.78rem; }
+            .page-container { padding: 24px 16px; }
+            .search-hero h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="/main" class="logo">Mi Libro <span>Link</span></a>
+        <nav class="topbar-nav">
+            <a href="/main">Inicio</a>
+            <a href="/search" class="active">Buscar</a>
+            <a href="/biblioteca">Mi biblioteca</a>
+        </nav>
+        <div class="topbar-profile">
+            <a href="/profile">Mi perfil</a>
+            <a href="/logout">Salir</a>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="search-hero">
+            <h1>Encuentra tu próximo libro</h1>
+            <p>Busca entre millones de títulos en Google Books.</p>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Título, autor o ISBN..." autocomplete="off">
+                <button onclick="searchBooks()">Buscar</button>
+            </div>
+        </div>
+
+        <div id="results"></div>
+    </main>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast">
+        <span class="toast-icon">✓</span>
+        <span id="toast-msg">Libro agregado a tu biblioteca</span>
+    </div>
+
+    <script>
+        const API_KEY = "AIzaSyAZ7X6jUncbjsNf8S4xgSICqVKgbYYcvPM";
+
+        // Enter key to search
+        document.getElementById('searchInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') searchBooks();
+        });
+
+        async function searchBooks() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div>Buscando libros...</div>';
+
+            try {
+                const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=20&key=${API_KEY}`);
+                const data = await response.json();
+
+                if (!data.items || data.items.length === 0) {
+                    resultsDiv.innerHTML = '<div class="loading">No se encontraron resultados. Intenta con otro término.</div>';
+                    return;
+                }
+
+                resultsDiv.innerHTML = `<p class="results-count">${data.totalItems.toLocaleString()} resultados — mostrando los primeros ${data.items.length}</p>`;
+
+                data.items.forEach(item => {
+                    const info = item.volumeInfo;
+                    const title = info.title || 'Sin título';
+                    const authors = info.authors ? info.authors.join(', ') : 'Autor desconocido';
+                    const thumbnail = info.imageLinks?.thumbnail || null;
+                    const previewLink = info.previewLink || '#';
+
+                    const card = document.createElement('div');
+                    card.className = 'book-result';
+
+                    const coverHtml = thumbnail
+                        ? `<img class="book-result-cover" src="${thumbnail}" alt="${title}">`
+                        : `<div class="book-result-cover-ph">📚</div>`;
+
+                    card.innerHTML = `
+                        ${coverHtml}
+                        <div class="book-result-info">
+                            <h3 class="book-result-title">${title}</h3>
+                            <p class="book-result-author">${authors}</p>
+                            <div class="book-result-actions">
+                                <form action="/addBook" method="post" style="display:inline" onsubmit="showToast('${title.replace(/'/g, "\\'")}')">
+                                    <input type="hidden" name="title" value="${title}">
+                                    <input type="hidden" name="authors" value="${authors}">
+                                    <input type="hidden" name="thumbnail" value="${thumbnail || ''}">
+                                    <button type="submit" class="btn-add-book">+ Agregar a mi biblioteca</button>
+                                </form>
+                                <a href="${previewLink}" target="_blank" class="btn-preview">Vista previa →</a>
+                            </div>
+                        </div>`;
+
+                    resultsDiv.appendChild(card);
+                });
+            } catch (err) {
+                resultsDiv.innerHTML = '<div class="loading">Ocurrió un error. Intenta de nuevo.</div>';
+            }
+        }
+
+        function showToast(title) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = `"${title}" agregado a tu biblioteca`;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>
